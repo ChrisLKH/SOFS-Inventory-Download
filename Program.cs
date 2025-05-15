@@ -10,11 +10,11 @@ namespace SOFSInventoryDownloader
     class Program
     {
         public static bool Downloaded = false;
-        public static string InventoryFilePath = @"C:\Processing\SOFS Inventory\SOFS_Inventory.xlsx";
+        public static string InventoryFilePath = @"C:\SOFS Inventory\SOFS_Inventory.xlsx";
 
         static void Main(string[] args)
         {
-            string username = "purchasing_group";
+            string username = "user";
             string password = GetPasswordFromDatabase(username);
 
             AsyncContext.Run(async () =>
@@ -80,10 +80,10 @@ namespace SOFSInventoryDownloader
 
         private static string GetPasswordFromDatabase(string username)
         {
-            using var conn = new SqlConnection("Data Source=192.168.168.197;Initial Catalog=ITWEB;User ID=progtest;Password=prog123");
+            using var conn = new SqlConnection("Data Source=localhost;Initial Catalog=master;User ID=user;Password=password");
             conn.Open();
 
-            using var cmd = new SqlCommand($"SELECT [password] FROM [ITWeb].[dbo].[SOFSPassword] WHERE [Username]=@username", conn);
+            using var cmd = new SqlCommand($"SELECT [password] FROM [SOFSPassword] WHERE [Username]=@username", conn);
             cmd.Parameters.AddWithValue("@username", username);
 
             return cmd.ExecuteScalar() as string;
